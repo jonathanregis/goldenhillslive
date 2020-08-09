@@ -1,0 +1,5 @@
+---
+deployment:
+ tasks:
+ - export DEPLOYPATH= /home4/ivlpazmy/public_html/goldenhills/
+ - /bin/cp -r * index.html $DEPLOYPATH
