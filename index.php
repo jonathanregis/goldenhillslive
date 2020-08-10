@@ -89,6 +89,8 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
+require("vendor/autoload.php");
+
 /*
  *---------------------------------------------------------------
  * SYSTEM DIRECTORY NAME

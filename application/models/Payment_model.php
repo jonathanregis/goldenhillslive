@@ -1,4 +1,5 @@
 <?php
+use Expay\SDK\MerchantApi as ExpressPayMerchantApi;
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Payment_model extends CI_Model {
@@ -81,6 +82,27 @@ class Payment_model extends CI_Model {
               return true;
           }else{
               return false;
+          }
+      }
+    }
+
+    //VALIDATE EXPRESSPAY PAYMENT
+    public function expresspay($order,$token) {
+      $environment = "sandbox";
+      $merchant_id = "446310613152";
+      $merchant_key = "eJmsG7J60QzeEDGNPYzed-zmLJmvC0xaFjQaR2DmIF-UfHXfJcO2ZH9BO3QbNBt-uNvP8BJDg2wYYGGrn8Y";
+      $merchantApi = new ExpressPayMerchantApi($merchant_id, $merchant_key, $environment);
+
+      $response = $merchantApi->query($token);
+
+      if(empty($response)){
+          return array("result"=>false,"message"=>"No response from Expresspay");
+      }else{
+          // CHECK IF THE PAYMENT STATUS IS APPROVED OR NOT
+          if($response && $response['result'] == 1){
+              return array("result"=>true,"amount"=>$response['amount']);
+          }else{
+              return array("result"=>false,"message"=>$response['result-text']);
           }
       }
     }

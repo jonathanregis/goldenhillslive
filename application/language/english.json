@@ -688,5 +688,22 @@
     "total_payout_amount": "Total payout amount",
     "date_processed": "Date processed",
     "you_are_already_an_instructor": "You are already an instructor",
-    "no_instruction_found": "No instruction found"
+    "no_instruction_found": "No instruction found",
+    "student_add": "Student add",
+    "student_add_form": "Student add form",
+    "credit_or_debit_card": "Credit or debit card",
+    "pay": "Pay",
+    "student_name": "Student name",
+    "amount_to_pay": "Amount to pay",
+    "an_error_occurred_during_payment": "An error occurred during payment",
+    "the_course_has_sold_out": "The course has sold out",
+    "course_purchase": "Course purchase",
+    "payment_successfully_done": "Payment successfully done",
+    "invoice": "Invoice",
+    "payment_method": "Payment method",
+    "purchase_date": "Purchase date",
+    "bill_to": "Bill to",
+    "sub_total": "Sub total",
+    "grand_total": "Grand total",
+    "print": "Print"
 }

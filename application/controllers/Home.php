@@ -406,6 +406,49 @@ class Home extends CI_Controller {
         endif;
     }
 
+    // SHOW EXPRESSPAY CHECKOUT PAGE
+    public function exp_checkout($payment_request = "only_for_mobile") {
+        if ($this->session->userdata('user_login') != 1 && $payment_request != 'true')
+        redirect('home', 'refresh');
+
+        //checking price
+        if($this->session->userdata('total_price_of_checking_out') == $this->input->post('total_price_of_checking_out')):
+            $total_price_of_checking_out = $this->input->post('total_price_of_checking_out');
+        else:
+            $total_price_of_checking_out = $this->session->userdata('total_price_of_checking_out');
+        endif;
+        $page_data['payment_request'] = $payment_request;
+        $page_data['user_details']    = $this->user_model->get_user($this->session->userdata('user_id'))->row_array();
+        $page_data['amount_to_pay']   = $total_price_of_checking_out;
+        $this->load->view('frontend/'.get_frontend_settings('theme').'/exp_checkout', $page_data);
+    }
+
+    // EXPRESSPAY CHECKOUT ACTIONS
+    public function exp_payment() {
+        $order_id = $this->input->get('order-id');
+        $token = $this->input->get('token');
+        //CHECK THE EXPRESSPAY PAYMENT STATUS
+        $status = $this->payment_model->expresspay($order_id,$token);
+        if (!$status['result']) {
+            $this->session->set_flashdata('error_message', $status['message']);
+            redirect('home/shopping_cart', 'refresh');
+        }
+        $user_id = $this->session->userdata("user_id");
+        $amount_paid = $status["amount"];
+        $this->crud_model->enrol_student($user_id);
+        $this->crud_model->course_purchase($user_id, 'expresspay', $amount_paid);
+        $this->email_model->course_purchase_notification($user_id, 'expresspay', $amount_paid);
+        $this->session->set_flashdata('flash_message', site_phrase('payment_successfully_done'));
+        if($payment_request_mobile == 'true'):
+            $course_id = $this->session->userdata('cart_items');
+            redirect('home/payment_success_mobile/'.$course_id[0].'/'.$user_id.'/paid', 'refresh');
+        else:
+            $this->session->set_userdata('cart_items', array());
+            redirect('home/my_courses', 'refresh');
+        endif;
+
+    }
+
 
     public function lesson($slug = "", $course_id = "", $lesson_id = "") {
         if ($this->session->userdata('user_login') != 1){
