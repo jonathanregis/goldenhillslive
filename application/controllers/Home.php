@@ -406,29 +406,29 @@ class Home extends CI_Controller {
         endif;
     }
 
-    // SHOW EXPRESSPAY CHECKOUT PAGE
-    public function exp_checkout($payment_request = "only_for_mobile") {
-        if ($this->session->userdata('user_login') != 1 && $payment_request != 'true')
+    // SHOW EXPRESSPAY VALIDATION PAGE
+    public function exp_validation() {
+        if ($this->session->userdata('user_login') != 1)
         redirect('home', 'refresh');
+        $order_id = $this->input->get('order-id');
+        $token = $this->input->get('token');
+        $page_data = array("token"=>$token, "orde_id"=>$order_id);
 
-        //checking price
-        if($this->session->userdata('total_price_of_checking_out') == $this->input->post('total_price_of_checking_out')):
-            $total_price_of_checking_out = $this->input->post('total_price_of_checking_out');
-        else:
-            $total_price_of_checking_out = $this->session->userdata('total_price_of_checking_out');
-        endif;
-        $page_data['payment_request'] = $payment_request;
-        $page_data['user_details']    = $this->user_model->get_user($this->session->userdata('user_id'))->row_array();
-        $page_data['amount_to_pay']   = $total_price_of_checking_out;
-        $this->load->view('frontend/'.get_frontend_settings('theme').'/exp_checkout', $page_data);
+        $this->load->view('frontend/'.get_frontend_settings('theme').'/exp_payment', $page_data);
     }
 
     // EXPRESSPAY CHECKOUT ACTIONS
     public function exp_payment() {
         $order_id = $this->input->get('order-id');
         $token = $this->input->get('token');
+        $return = $this->input->get('ret');
         //CHECK THE EXPRESSPAY PAYMENT STATUS
         $status = $this->payment_model->expresspay($order_id,$token);
+        if($return) {
+            header('Content-Type: application/json');
+            echo json_encode($status['data']);
+            exit();
+        }
         if (!$status['result']) {
             $this->session->set_flashdata('error_message', $status['message']);
             redirect('home/shopping_cart', 'refresh');

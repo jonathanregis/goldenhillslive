@@ -96,13 +96,13 @@ class Payment_model extends CI_Model {
       $response = $merchantApi->query($token);
 
       if(empty($response)){
-          return array("result"=>false,"message"=>"No response from Expresspay");
+          return array("result"=>false,"message"=>"No response from Expresspay", "data"=>array());
       }else{
           // CHECK IF THE PAYMENT STATUS IS APPROVED OR NOT
           if($response && $response['result'] == 1){
-              return array("result"=>true,"amount"=>$response['amount']);
+              return array("result"=>true,"amount"=>$response['amount'],"data"=>$response);
           }else{
-              return array("result"=>false,"message"=>$response['result-text']);
+              return array("result"=>false,"message"=>$response['result-text'],"data"=>$response);
           }
       }
     }

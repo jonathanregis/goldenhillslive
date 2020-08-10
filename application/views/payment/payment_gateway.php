@@ -7,7 +7,7 @@ $merchant_id = "446310613152";
 $merchant_key = "eJmsG7J60QzeEDGNPYzed-zmLJmvC0xaFjQaR2DmIF-UfHXfJcO2ZH9BO3QbNBt-uNvP8BJDg2wYYGGrn8Y";
 $environment = "sandbox";
 $description = "Golden Hills Online course enrolment";
-$redirect_url = site_url("home/exp_payment");
+$redirect_url = site_url("home/exp_validation");
 $account_number = $user['id'] . "245";
 $email = $user['email'];
 $first_name = $user['first_name'];
@@ -55,5 +55,4 @@ if($response){
 }
 
 print("Please wait, redirecting to expresspay for payment...<br/>");
-print_r($response);
 ?>
