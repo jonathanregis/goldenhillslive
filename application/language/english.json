@@ -705,5 +705,9 @@
     "bill_to": "Bill to",
     "sub_total": "Sub total",
     "grand_total": "Grand total",
-    "print": "Print"
+    "print": "Print",
+    "packages": "Packages",
+    "add_package": "Add package",
+    "": "",
+    "edit_package": "Edit package"
 }

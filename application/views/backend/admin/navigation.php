@@ -159,5 +159,11 @@ $status_wise_courses = $this->crud_model->get_status_wise_courses();
 				<span><?php echo get_phrase('manage_profile'); ?></span>
 			</a>
 		</li>
+		<li class="side-nav-item <?php if ($page_name == 'packages')echo 'active';?>">
+			<a href="<?php echo site_url('admin/packages'); ?>" class="side-nav-link">
+				<i class="dripicons-archive"></i>
+				<span>Packages</span>
+			</a>
+		</li>
 	</ul>
 </div>

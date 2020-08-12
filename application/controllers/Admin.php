@@ -93,6 +93,57 @@ class Admin extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
+    public function packages($param1 = "", $param2 = "") {
+        if ($this->session->userdata('admin_login') != true) {
+            redirect(site_url('login'), 'refresh');
+        }
+
+        if ($param1 == 'add') {
+            $response = $this->crud_model->add_package();
+            if ($response) {
+                $this->session->set_flashdata('flash_message', get_phrase('data_added_successfully'));
+            }else{
+                $this->session->set_flashdata('error_message', get_phrase('category_name_already_exists'));
+            }
+            redirect(site_url('admin/packages'), 'refresh');
+        }
+        elseif ($param1 == "edit") {
+            $response = $this->crud_model->edit_package($param2);
+            if ($response) {
+                $this->session->set_flashdata('flash_message', get_phrase('data_added_successfully'));
+            }else{
+                $this->session->set_flashdata('error_message', get_phrase('category_name_already_exists'));
+            }
+            redirect(site_url('admin/packages'), 'refresh');
+        }
+        elseif ($param1 == "delete") {
+            $this->crud_model->delete_package($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('data_deleted'));
+            redirect(site_url('admin/packages'), 'refresh');
+        }
+        $page_data['page_name'] = 'packages';
+        $page_data['page_title'] = 'Packages';
+        $page_data['packages'] = $this->crud_model->get_packages($param2);
+        $this->load->view('backend/index', $page_data);
+    }
+
+    public function package_form($param1 = "", $param2 = "") {
+        if ($this->session->userdata('admin_login') != true) {
+            redirect(site_url('login'), 'refresh');
+        }
+        if ($param1 == "add_package") {
+            $page_data['page_name'] = 'package_add';
+            $page_data['page_title'] = 'Add package';
+        }
+        if ($param1 == "edit_package") {
+            $page_data['page_name'] = 'package_edit';
+            $page_data['page_title'] = 'Edit package';
+            $page_data['package_id'] = $param2;
+        }
+
+        $this->load->view('backend/index', $page_data);
+    }
+
     public function sub_categories_by_category_id($category_id = 0) {
         if ($this->session->userdata('admin_login') != true) {
             redirect(site_url('login'), 'refresh');

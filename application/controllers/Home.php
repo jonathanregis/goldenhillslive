@@ -451,9 +451,7 @@ class Home extends CI_Controller {
 
     //update cart items access type (one session or 12 weeks)
 
-    public function access_type_ajax(){
-        $package = $this->input->get("value");
-        $course_id = $this->input->get("course_id");
+    public function access_type_ajax($course_id,$package){
         $total = $this->session->userdata('total_price_of_checking_out');
         if(!$this->session->userdata("cart_meta")){
             $this->session->set_userdata("cart_meta",array());
@@ -466,15 +464,14 @@ class Home extends CI_Controller {
         }
 
         $course = $this->crud_model->get_course_by_id($course_id)->row_array();
-        $package_list = array("0"=>0,"1"=>500 - $course['price']);
-        $price = $course['price'] + $package_list[$package];
-        $total = $total - ($course['price'] + $package_list[$meta_array[$course_id]]);
+        $price = $course['price'] + get_package_price($package,$course['price']);
+        $total = $total - ($course['price'] + get_package_price($meta_array[$course_id],$course['price']));
         $total = $total + $price;
         $this->session->set_userdata('total_price_of_checking_out',$total);
         $meta_array[$course_id] = $package;
         $this->session->set_userdata("cart_meta",$meta_array);
         header("Content-Type: application/json");
-        echo json_encode(array("price"=>currency($price),"total"=>$total));
+        echo json_encode(array("price"=>currency($price),"total"=>currency($total)));
 
     }
 

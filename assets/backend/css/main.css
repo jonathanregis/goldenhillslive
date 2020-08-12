@@ -269,3 +269,9 @@ body.show {
   text-align: center;
   padding-top: 100px;
 }
+
+.half{
+  width: 50%;
+  box-sizing: border-box;
+  display: inline-block;
+}

@@ -353,6 +353,61 @@ class Crud_model extends CI_Model
         $this->db->update('settings', $data);
     }
 
+    public function add_package(){
+        $previous_data = $this->db->get('packages')->num_rows();
+        if($previous_data == 0){
+           $data = array();
+            $data['name'] = html_escape($this->input->post('name'));
+            $data['price'] = html_escape($this->input->post('price'));
+            $data['duration'] = html_escape($this->input->post('duration'));
+            $data['duration_unit'] = html_escape($this->input->post('duration_unit'));
+            $this->db->insert('packages',$data);
+            return true;
+        }
+        else return false;
+        
+    }
+
+    public function edit_package($param1=""){
+        $previous_data = $this->db->get('packages')->result_array();
+
+        $checker = true;
+        foreach ($previous_data as $row) {
+            if ($row['id'] != $param1) {
+                $checker = false;
+                break;
+            }
+        }
+        if($checker){
+            $data = array();
+            $data['name'] = html_escape($this->input->post('name'));
+            $data['price'] = html_escape($this->input->post('price'));
+            $data['duration'] = html_escape($this->input->post('duration'));
+            $data['duration_unit'] = html_escape($this->input->post('duration_unit'));
+            $this->db->where('id',$param1);
+            $this->db->update('packages',$data);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function get_packages($param1 = ""){
+        if ($param1 != "") {
+            $this->db->where('id', $param1);
+            return $this->db->get('packages')->row_array();
+        }
+        return $this->db->get('packages')->result_array();
+        
+    }
+
+    public function delete_package($package_id)
+    {
+        $this->db->where('id', $package_id);
+        $this->db->delete('packages');
+    }
+
     public function update_paypal_settings()
     {
         // update paypal keys

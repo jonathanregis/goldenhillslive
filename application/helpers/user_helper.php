@@ -60,22 +60,29 @@ if( ! function_exists('is_access_allowed'))
 		$CI->load->model('crud_model');
 		$course_data = $CI->crud_model->get_course_by_id($course)->row_array();
 		$enrolled_history = $CI->db->get_where('enrol' , array('user_id' => $user, 'course_id' => $course))->row_array();
-		$valid = false;
-		if($CI->session->userdata("lesson_started") == $course ) return true;
-		if($course_data['is_free_course'] == 1){
+		$package = $CI->db->get_where('packages' , array('id' => $enrolled_history['access_type']))->row_array();
+	    $last_date = date('Y-m-d',$enrolled_history['date_added']);
+		$current_date = date('Y-m-d');
+
+		$date_diff = strtotime($current_date) -  strtotime($last_date) ;
+		$nominal_diff = strtotime($package['duration'] . " " . $package['duration_unit'],0);
+		$time_good = $date_diff < $nominal_diff;
+		if($course_data['is_free_course'] == 1 || $enrolled_history['started'] != 1 || $time_good){
 			return true;
 		}
-		if($enrolled_history['access_type'] == 1){
-			$valid = $enrolled_history['date_added'] > time() - (84 * 86400);
-		}
-		if($enrolled_history['access_type'] == 0){
-			$valid = $enrolled_history['date_added'] > time() - 86400;
-		}
-		if($enrolled_history['access_type'] < 0){
-			$valid = false;
-		}
-		return $valid;
+		
+		else return false;
 	}
+}
+
+function get_package_price($package,$course_price){
+	$CI	=&	get_instance();
+	$CI->load->database();
+	$package = $CI->db->get_where('packages' , array('id' => $package))->row_array();
+	if($package['price'] == 0){
+		return 0;
+	}
+	return $package['price'] - $course_price;
 }
 
 // ------------------------------------------------------------------------

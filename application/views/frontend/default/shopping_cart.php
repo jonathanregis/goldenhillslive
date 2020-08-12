@@ -1,6 +1,4 @@
-<style>
 
-</style>
 <section class="page-header-area">
     <div class="container">
         <div class="row">
@@ -56,9 +54,12 @@
                                              I'm buying
                                               <div class="select-box">
                                                 <select id="select-box<?php echo $course_details['id']; ?>" data-courseid="<?php echo $course_details['id']; ?>" class="select">
-                                                  <option value="0" selected>One session only</option>
-                                                  <option value="1">12 weeks of full access</option>
+                                                    <?php $packages = $this->crud_model->get_packages(); ?>
+                                                    <?php foreach($packages as $package) { ?>
+                                                  <option value="<?php echo $package['id'];?>" <?php if($package['id'] == 1) echo "selected";?>><?php echo $package['name'] . " (".$package['duration'] ." ".$package['duration_unit'] . ")";?></option>
+                                              <?php } ?>
                                                 </select>
+                                                <p><small>Time will only start when you access the course.</small></p>
                                                 
                                               </div>
                                                
@@ -113,7 +114,7 @@
                     <span id = "total_price_of_checking_out" hidden><?php echo $total_price; $this->session->set_userdata('total_price_of_checking_out', $total_price);
                     $meta = array();
                     foreach($this->session->userdata("cart_items") as $course){
-                        $meta[$course] = "0";
+                        $meta[$course] = "1";
                     }
                     $this->session->set_userdata('cart_meta', $meta);
                     ?>
@@ -246,7 +247,7 @@ $("select").on("change" , function() {
   
   var value = $(this).val();
       courseid = $(this).data("courseid");
-  fetch("<?php echo site_url('home/access_type_ajax'); ?>"+"?course_id="+courseid+"&value="+value)
+  fetch("<?php echo site_url('home/access_type_ajax'); ?>"+"/"+courseid+"/"+value)
   .then(res => res.json())
   .then(response => {
     console.log(response);

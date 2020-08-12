@@ -1,105 +1,4 @@
-<style>
-    @import url("https://fonts.googleapis.com/css?family=Playfair+Display&display=swap");
-.typo, .list a {
-  font-weight: 700;
-  font-family: 'Playfair Display', serif;
-  color: #585858;
-  text-decoration: none;
-}
-.typo option, .list a option {
-  font-size: 30px;
-}
 
-.transition {
-  -webkit-transition: all .4s ease-in-out;
-  transition: all .4s ease-in-out;
-}
-
-.wrapper {
-  padding-top: 150px;
-  height: 100vh;
-  font-size: 60px;
-}
-
-.list {
-  display: inline-block;
-  position: relative;
-  margin-left: 6px;
-}
-.list ul {
-  text-align: left;
-  position: absolute;
-  padding: 0;
-  top: 0;
-  left: 0;
-  display: none;
-}
-.list ul .active {
-  display: block;
-}
-.list li {
-  list-style: none;
-}
-.list li:first-child a {
-  color: #7d40bf;
-}
-.list a {
-  -webkit-transition: all .4s;
-  transition: all .4s;
-  color: #7b00ff;
-  position: relative;
-}
-.list a:after {
-  position: absolute;
-  content: '';
-  height: 5px;
-  width: 0;
-  left: 0;
-  background: #b066ff;
-  bottom: 0;
-  -webkit-transition: all .4s ease-out;
-  transition: all .4s ease-out;
-}
-.list a:hover {
-  cursor: pointer;
-  color: #b066ff;
-}
-.list a:hover:after {
-  width: 100%;
-}
-
-select {
-  display: inline;
-  border: 0;
-  width: auto;
-  margin-left: 10px;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  border-bottom: 2px solid #555;
-  color: #7b00ff;
-  -webkit-transition: all .4s ease-in-out;
-  transition: all .4s ease-in-out;
-}
-select:hover {
-  cursor: pointer;
-}
-select option {
-  border: 0;
-  border-bottom: 1px solid #555;
-  padding: 10px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
-.placeholder {
-  border-bottom: 4px solid;
-  cursor: pointer;
-}
-.placeholder:hover {
-  color: #888888;
-}
-</style>
 <div class="col-lg-9">
 
     <div class="in-cart-box">
@@ -131,22 +30,20 @@ select option {
                                     </div>
                                 </a>
                                 <!-- package selection -->
-                                
-                                
-                                <div class="wrapper typo">I'm buying
-                                  <div class="list"><span class="placeholder">select package &#xfe40;</span>
-                                    <ul class="list__ul">
-                                      <li><a href="">One lesson only</a></li>
-                                      <li><a href="">12 weeks of full access</a></li>
-                                    </ul>
-                                  </div>
-                                  <!--
-                                  .select
-                                    select.typo
-                                      - each item in ['lorem', 'ipsum', 'dolor', 'sit', 'amet']
-                                        option.typo 
-                                  -->
-                                </div>
+                                <form action="">
+                                             I'm buying
+                                              <div class="select-box">
+                                                <select id="select-box<?php echo $course_details['id']; ?>" data-courseid="<?php echo $course_details['id']; ?>" class="select">
+                                                    <?php $packages = $this->crud_model->get_packages(); ?>
+                                                    <?php foreach($packages as $package) { ?>
+                                                  <option value="<?php echo $package['id'];?>" <?php if($package['id'] == 1) echo "selected";?>><?php echo $package['name'] . " (".$package['duration'] ." ".$package['duration_unit'] . ")";?></option>
+                                              <?php } ?>
+                                                </select>
+                                                <p><small>Time will only start when you access the course.</small></p>
+                                                
+                                              </div>
+                                               
+                                            </form>
                                 
                                 <!-- / package selection -->
                             </div>
@@ -154,7 +51,7 @@ select option {
                                 <div id = "<?php echo $course_details['id']; ?>" onclick="removeFromCartList(this)"><?php echo site_phrase('remove'); ?></div>
                                 <!-- <div>Move to Wishlist</div> -->
                             </div>
-                            <div class="price">
+                            <div class="price" id="price-<?php echo $course_details['id']; ?>">
                                 <a href="">
                                     <?php if ($course_details['discount_flag'] == 1): ?>
                                         <div class="current-price">
@@ -225,4 +122,17 @@ function handleCheckOut() {
         }
     });
 }
+$("select").on("change" , function() {
+  
+  var value = $(this).val();
+      courseid = $(this).data("courseid");
+  fetch("<?php echo site_url('home/access_type_ajax'); ?>"+"?course_id="+courseid+"&value="+value)
+  .then(res => res.json())
+  .then(response => {
+    console.log(response);
+    $("#price-"+courseid+" .current-price").text(response.price);
+    $(".total-price").text(response.total);
+    });
+    
+});
 </script>
