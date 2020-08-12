@@ -1516,7 +1516,7 @@ class Crud_model extends CI_Model
                     $data['date_added'] = strtotime(date('D, d-M-Y'));
                     $data['access_type'] = (int) $meta[$purchased_course];
                     if($previous_data->num_rows() > 0){
-                        $this->db->where('course_id'=>$purchased_course, 'user_id'=>$user_id);
+                        $this->db->where(array('course_id'=>$purchased_course, 'user_id'=>$user_id));
                         $this->db->delete('enrol');
                     }
                     $this->db->insert('enrol', $data);
