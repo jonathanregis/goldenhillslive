@@ -57,9 +57,13 @@ if( ! function_exists('is_access_allowed'))
 		$CI	=&	get_instance();
 		$CI->load->library('session');
 		$CI->load->database();
+		$course_data = $this->crud_model->get_course_by_id($course)->row_array();
 		$enrolled_history = $CI->db->get_where('enrol' , array('user_id' => $user, 'course_id' => $course))->row_array();
 		$valid = false;
 		if($CI->session->userdata("lesson_started") == $course ) return true;
+		if($course_data['is_free_course'] == 1){
+			return true;
+		}
 		if($enrolled_history['access_type'] == 1){
 			$valid = $enrolled_history['date_added'] > time() - (84 * 86400);
 		}
