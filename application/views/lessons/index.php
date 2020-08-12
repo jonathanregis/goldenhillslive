@@ -1,6 +1,6 @@
 <?php
 $this->session->set_userdata("lesson_started",$course_id);
-$c = $this->db->get_where("enrol",array("course_id"=>$course_id,"user_id"=>$this->session->userdata("user_id")));
+$c = $this->db->get_where("enrol",array("course_id"=>$course_id,"user_id"=>$this->session->userdata("user_id")))->row_array();
 if($c['access_type'] == 0){
 	$this->db->where(array('user_id'=> $this->session->userdata("user_id"), 'course_id' => $course_id));
 	$this->db->update('enrol',array('access_type'=>-1));
