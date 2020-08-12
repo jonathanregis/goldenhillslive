@@ -40,7 +40,7 @@ if ( ! function_exists('is_purchased'))
 		$CI->load->database();
 		if ($CI->session->userdata('user_login')) {
 			$enrolled_history = $CI->db->get_where('enrol' , array('user_id' => $CI->session->userdata('user_id'), 'course_id' => $course_id))->num_rows();
-			if ($enrolled_history > 0) {
+			if ($enrolled_history > 0 && is_access_allowed($course_id,$CI->session->userdata('user_id'))) {
 				return true;
 			}else {
 				return false;
@@ -48,6 +48,28 @@ if ( ! function_exists('is_purchased'))
 		}else {
 			return false;
 		}
+	}
+}
+
+if( ! function_exists('is_access_allowed'))
+{
+	function is_access_allowed($course,$user){
+		$CI	=&	get_instance();
+		$CI->load->library('session');
+		$CI->load->database();
+		$enrolled_history = $CI->db->get_where('enrol' , array('user_id' => $user, 'course_id' => $course))->row_array();
+		$valid = false;
+		if($CI->session->userdata("lesson_started") == $course ) return true;
+		if($enrolled_history['access_type'] == 1){
+			$valid = $enrolled_history['date_added'] > time() - (84 * 86400);
+		}
+		if($enrolled_history['access_type'] == 0){
+			$valid = $enrolled_history['date_added'] > time() - 86400;
+		}
+		if($enrolled_history['access_type'] < 0){
+			$valid = false;
+		}
+		return $valid;
 	}
 }
 

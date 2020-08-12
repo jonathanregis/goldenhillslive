@@ -1454,9 +1454,11 @@ class Crud_model extends CI_Model
             {
                 $purchased_courses = $this->session->userdata('cart_items');
                 foreach ($purchased_courses as $purchased_course) {
+                    $meta = $this->session->userdata("cart_meta");
                     $data['user_id'] = $user_id;
                     $data['course_id'] = $purchased_course;
                     $data['date_added'] = strtotime(date('D, d-M-Y'));
+                    $data['access_type'] = (int) $meta[$purchased_course];
                     $this->db->insert('enrol', $data);
                 }
             }
@@ -1464,6 +1466,7 @@ class Crud_model extends CI_Model
             {
                 $data['course_id'] = $this->input->post('course_id');
                 $data['user_id']   = $this->input->post('user_id');
+                $data['access_type'] = $this->input->post('access_type');
                 if ($this->db->get_where('enrol', $data)->num_rows() > 0) {
                     $this->session->set_flashdata('error_message', get_phrase('student_has_already_been_enrolled_to_this_course'));
                 } else {

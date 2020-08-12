@@ -96,7 +96,7 @@
 			showSuccess();
 		}
 		else{
-			if(data.result == 3){
+			if(data.result == 4){
 				setInterval(()=>{fetch("<?php echo site_url('home/exp_payment?order-id='.$order_id.'&token='.$token.'&ret=true');?>")
 	.then(res => res.json())
 	.then(result => handleData(result))},5000);

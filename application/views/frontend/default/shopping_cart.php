@@ -1,50 +1,5 @@
 <style>
-.select-box {
-  cursor: pointer;
-  position : relative;
-  max-width:  20em;
-  margin: 0;
-}
 
-.select,
-.label {
-  color: #414141;
-  display: block;
-  font: 400 17px/2em 'Source Sans Pro', sans-serif;
-}
-
-.select {
-  width: 100%;
-  position: absolute;
-  top: 0;
-  padding: 5px 0;
-  height: 40px;
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  background: none transparent;
-  border: 0 none;
-}
-.select-box1 {
-  background: #ececec;
-}
-
-.label {
-  position: relative;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-.open .label::after {
-   content: "▲";
-}
-.label::after {
-  content: "▼";
-  font-size: 12px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 5px 15px;
-  border-left: 5px solid #fff;
-}
 </style>
 <section class="page-header-area">
     <div class="container">
@@ -97,14 +52,12 @@
                                             </a>
                                             <!-- package selection -->
                                             
-                                            <form action="#">
+                                            <form action="">
                                              I'm buying
                                               <div class="select-box">
-                                                
-                                                <label for="select-box<?php echo $course_details['id']; ?>" class="label select-box<?php echo $course_details['id']; ?>"><span class="label-desc">Choose your package</span> </label>
-                                                <select id="select-box<?php echo $course_details['id']; ?>" class="select">
-                                                  <option value="Choice1">One session only</option>
-                                                  <option value="Choice2">12 weeks of full access</option>
+                                                <select id="select-box<?php echo $course_details['id']; ?>" data-courseid="<?php echo $course_details['id']; ?>" class="select">
+                                                  <option value="0" selected>One session only</option>
+                                                  <option value="1">12 weeks of full access</option>
                                                 </select>
                                                 
                                               </div>
@@ -117,7 +70,7 @@
                                             <div id = "<?php echo $course_details['id']; ?>" onclick="removeFromCartList(this)"><?php echo site_phrase('remove'); ?></div>
                                             <!-- <div>Move to Wishlist</div> -->
                                         </div>
-                                        <div class="price">
+                                        <div class="price" id="price-<?php echo $course_details['id']; ?>">
                                             <a href="">
                                                 <?php if ($course_details['discount_flag'] == 1): ?>
                                                     <div class="current-price">
@@ -157,7 +110,13 @@
             <div class="col-lg-3">
                 <div class="cart-sidebar">
                     <div class="total"><?php echo site_phrase('total'); ?>:</div>
-                    <span id = "total_price_of_checking_out" hidden><?php echo $total_price; $this->session->set_userdata('total_price_of_checking_out', $total_price);?>
+                    <span id = "total_price_of_checking_out" hidden><?php echo $total_price; $this->session->set_userdata('total_price_of_checking_out', $total_price);
+                    $meta = array();
+                    foreach($this->session->userdata("cart_items") as $course){
+                        $meta[$course] = "0";
+                    }
+                    $this->session->set_userdata('cart_meta', $meta);
+                    ?>
                     </span>
                     <div class="total-price"><?php echo currency($total_price); ?></div>
                     <div class="total-original-price">
@@ -283,30 +242,17 @@ function handleCartItems(elem) {
 <script>
 
 
-$("select").on("click" , function() {
-  
-  $(this).parent(".select-box").toggleClass("open");
-  
-});
-
-$(document).mouseup(function (e)
-{
-    var container = $(".select-box");
-
-    if (container.has(e.target).length === 0)
-    {
-        container.removeClass("open");
-    }
-});
-
-
 $("select").on("change" , function() {
   
-  var selection = $(this).find("option:selected").text(),
-      labelFor = $(this).attr("id"),
-      label = $("[for='" + labelFor + "']");
-    
-  label.find(".label-desc").html(selection);
+  var value = $(this).val();
+      courseid = $(this).data("courseid");
+  fetch("<?php echo site_url('home/access_type_ajax'); ?>"+"?course_id="+courseid+"&value="+value)
+  .then(res => res.json())
+  .then(response => {
+    console.log(response);
+    $("#price-"+courseid+" .current-price").text(response.price);
+    $(".total-price").text(response.total);
+    });
     
 });
 

@@ -449,6 +449,35 @@ class Home extends CI_Controller {
 
     }
 
+    //update cart items access type (one session or 12 weeks)
+
+    public function access_type_ajax(){
+        $package = $this->input->get("value");
+        $course_id = $this->input->get("course_id");
+        $total = $this->session->userdata('total_price_of_checking_out');
+        if(!$this->session->userdata("cart_meta")){
+            $this->session->set_userdata("cart_meta",array());
+            $meta_array = $this->session->userdata("cart_meta");
+            if(!$meta_array[$course_id]) $meta_array[$course_id] = "0";
+            $this->session->set_userdata("cart_meta",$meta_array);
+        }
+        else{
+            $meta_array = $this->session->userdata("cart_meta");
+        }
+
+        $course = $this->crud_model->get_course_by_id($course_id)->row_array();
+        $package_list = array("0"=>0,"1"=>500 - $course['price']);
+        $price = $course['price'] + $package_list[$package];
+        $total = $total - ($course['price'] + $package_list[$meta_array[$course_id]]);
+        $total = $total + $price;
+        $this->session->set_userdata('total_price_of_checking_out',$total);
+        $meta_array[$course_id] = $package;
+        $this->session->set_userdata("cart_meta",$meta_array);
+        header("Content-Type: application/json");
+        echo json_encode(array("price"=>currency($price),"total"=>$total));
+
+    }
+
 
     public function lesson($slug = "", $course_id = "", $lesson_id = "") {
         if ($this->session->userdata('user_login') != 1){
