@@ -439,13 +439,9 @@ class Home extends CI_Controller {
         $this->crud_model->course_purchase($user_id, 'expresspay', $amount_paid);
         $this->email_model->course_purchase_notification($user_id, 'expresspay', $amount_paid);
         $this->session->set_flashdata('flash_message', site_phrase('payment_successfully_done'));
-        if($payment_request_mobile == 'true'):
-            $course_id = $this->session->userdata('cart_items');
-            redirect('home/payment_success_mobile/'.$course_id[0].'/'.$user_id.'/paid', 'refresh');
-        else:
+        
             $this->session->set_userdata('cart_items', array());
             redirect('home/my_courses', 'refresh');
-        endif;
 
     }
 
