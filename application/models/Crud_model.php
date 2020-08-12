@@ -1509,11 +1509,16 @@ class Crud_model extends CI_Model
             {
                 $purchased_courses = $this->session->userdata('cart_items');
                 foreach ($purchased_courses as $purchased_course) {
+                    $previous_data = $this->crud_model->get_course_by_id($purchased_course);
                     $meta = $this->session->userdata("cart_meta");
                     $data['user_id'] = $user_id;
                     $data['course_id'] = $purchased_course;
                     $data['date_added'] = strtotime(date('D, d-M-Y'));
                     $data['access_type'] = (int) $meta[$purchased_course];
+                    if($previous_data->num_rows() > 0){
+                        $this->db->where('course_id'=>$purchased_course, 'user_id'=>$user_id);
+                        $this->db->delete('enrol');
+                    }
                     $this->db->insert('enrol', $data);
                 }
             }

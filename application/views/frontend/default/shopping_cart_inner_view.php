@@ -126,7 +126,7 @@ $("select").on("change" , function() {
   
   var value = $(this).val();
       courseid = $(this).data("courseid");
-  fetch("<?php echo site_url('home/access_type_ajax'); ?>"+"?course_id="+courseid+"&value="+value)
+  fetch("<?php echo site_url('home/access_type_ajax'); ?>"+"/"+courseid+"/"+value)
   .then(res => res.json())
   .then(response => {
     console.log(response);
@@ -135,4 +135,5 @@ $("select").on("change" , function() {
     });
     
 });
+
 </script>
