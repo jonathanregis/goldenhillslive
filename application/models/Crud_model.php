@@ -2303,13 +2303,13 @@ class Crud_model extends CI_Model
                         $progress = $this->input->post('progress');
                         $user_id   = $this->session->userdata('user_id');
                         $user_details  = $this->user_model->get_all_user($user_id)->row_array();
-                        $watch_history = $user_details['watch_history'];
+                        $watch_history = json_decode($user_details['watch_history'],true);
                         $watch_history_array = array();
                         if ($watch_history == '') {
                             array_push($watch_history_array, array('lesson_id' => $lesson_id, 'progress' => $progress));
                         } else {
                             $founder = false;
-                            $watch_history_array = json_decode($watch_history, true);
+                            $watch_history_array = $watch_history;
                             for ($i = 0; $i < count($watch_history_array); $i++) {
                                 $watch_history_for_each_lesson = $watch_history_array[$i];
                                 if ($watch_history_for_each_lesson['lesson_id'] == $lesson_id) {

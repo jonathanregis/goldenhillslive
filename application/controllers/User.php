@@ -42,7 +42,7 @@ class User extends CI_Controller {
     public function instructor_authorization($method) {
         // IF THE USER IS NOT AN INSTRUCTOR HE/SHE CAN NEVER ACCESS THE OTHER FUNCTIONS EXCEPT FOR BELOW FUNCTIONS.
         if ($this->session->userdata('is_instructor') != 1) {
-            $unprotected_routes = ['become_an_instructor', 'manage_profile'];
+            $unprotected_routes = ['become_an_instructor', 'manage_profile', 'save_course_progress'];
 
             if (!in_array($method, $unprotected_routes)) {
                 redirect(site_url('user/become_an_instructor'), 'refresh');

@@ -100,6 +100,7 @@ foreach ($my_courses as $my_course) {
 
                                           <?php
                                            $get_my_rating = $this->crud_model->get_user_specific_rating('course', $my_course['course_id']);
+                                           if(empty($get_my_rating)) $get_my_rating = array("rating"=>0);
                                            for($i = 1; $i < 6; $i++):?>
                                            <?php if ($i <= $get_my_rating['rating']): ?>
                                               <i class="fas fa-star filled"></i>
@@ -113,7 +114,7 @@ foreach ($my_courses as $my_course) {
                                               <?php echo site_phrase('rating'); ?>
                                           </p> -->
                                           <p class="your-rating-text">
-                                            <a href="javascript::" id = "edit_rating_btn_<?php echo $course_details['id']; ?>" onclick="toggleRatingView('<?php echo $course_details['id']; ?>')" style="color: #2a303b"><?php echo site_phrase('edit_rating'); ?></a>
+                                            <a href="javascript::" id = "edit_rating_btn_<?php echo $course_details['id']; ?>" onclick="toggleRatingView('<?php echo $course_details['id']; ?>')" style="color: #2a303b"><?php echo $get_my_rating['rating'] > 0 ? site_phrase('edit_rating') : "Rate course"; ?></a>
     		                                    <a href="javascript::" class="hidden" id = "cancel_rating_btn_<?php echo $course_details['id']; ?>" onclick="toggleRatingView('<?php echo $course_details['id']; ?>')" style="color: #2a303b"><?php echo site_phrase('cancel_rating'); ?></a>
                                           </p>
                                       </div>
@@ -132,6 +133,7 @@ foreach ($my_courses as $my_course) {
                                   <a href="<?php echo site_url('home/course/'.rawurlencode(slugify($course_details['title'])).'/'.$my_course['course_id']); ?>"><h5 class="title"><?php echo ellipsis($course_details['title']); ?></h5></a>
                                   <?php
                     								$user_specific_rating = $this->crud_model->get_user_specific_rating('course', $course_details['id']);
+                                    if(empty($user_specific_rating)) $user_specific_rating = array("rating"=>0,"review"=>"");
                     							?>
                     							<form class="" action="" method="post">
                     								<div class="form-group select">

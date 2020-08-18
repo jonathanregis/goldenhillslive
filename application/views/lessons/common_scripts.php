@@ -4,6 +4,7 @@ var newProgress;
 var savedProgress;
 var currentProgress = '<?php echo lesson_progress($lesson_id); ?>';
 var lessonType = '<?php echo $lesson_details['lesson_type']; ?>';
+<?php if(!isset($provider)) $provider = NULL; ?>
 var videoProvider = '<?php echo $provider; ?>';
 
 function markThisLessonAsCompleted(lesson_id) {
