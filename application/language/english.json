@@ -709,5 +709,6 @@
     "packages": "Packages",
     "add_package": "Add package",
     "": "",
-    "edit_package": "Edit package"
+    "edit_package": "Edit package",
+    "new_partnership_request": "New partnership request"
 }

@@ -138,6 +138,16 @@ class Email_model extends CI_Model {
 		$this->send_smtp_mail($email_msg, $subject, $user_details['email'], $email_from);
 	}
 
+	public function partnership_email($data){
+		if(!empty($data)){
+			$msg = "Hello admin, a new partnership request was received from goldenhillsschoolsonline.com";
+			foreach($data as $key=>$value){
+				$msg .= "<br/>$key : $value";
+			}
+			$this->send_smtp_mail($msg,"New partnership request", "partners@goldenhillsschoolsonline.com", "notify@goldenhillsschoolsonline.com");
+		}
+	}
+
 	public function send_smtp_mail($msg=NULL, $sub=NULL, $to=NULL, $from=NULL, $email_type=NULL, $redirect_url=NULL) {
 		//Load email library
 		$this->load->library('email');

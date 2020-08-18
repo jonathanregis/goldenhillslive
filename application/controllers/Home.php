@@ -29,6 +29,11 @@ class Home extends CI_Controller {
     }
     
     public function partner(){
+        $form = $this->input->post();
+        if(!empty($form)){
+            $this->email_model->partnership_email($form);
+            $this->session->set_flashdata('flash_message', "Information sent successfully. We will get back to you soon.");
+        }
         $page_data['page_name'] = "partnership";
         $page_data['page_title'] = "Become a partner";
         $this->load->view('frontend/'.get_frontend_settings('theme').'/index', $page_data);

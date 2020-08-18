@@ -133,46 +133,47 @@ h2.heading {
   background-color: #7dc2eb;
 }
 </style>
-<form action="" class="partner">
+<form action="" class="partner" method="post">
     <h2>Become a partner with us.</h2>
 <p>Host your own online course platform for your school. Please fill in the form below.</p>
   <!--  General -->
   <div class="form-group">
     <h2 class="heading full">Personal Info</h2>
     <div class="controls half">
-      <input type="text" id="firstName" class="floatLabel" name="First Name" required>
+      <input type="text" id="firstName" class="floatLabel" name="FirstName" required>
       <label for="firstName">First Name</label>
     </div>
     <div class="controls half">
-      <input type="text" id="lastName" class="floatLabel" name="Last Name" required>
+      <input type="text" id="lastName" class="floatLabel" name="LastName" required>
       <label for="lastName">Last Name</label>
-    </div>
-    <div class="controls full">
-      <input type="email" id="email" class="floatLabel" name="email" required>
-      <label for="email">Email</label>
     </div>
   </div>
   <!--  Details -->
   <div class="form-group">
-    <h2 class="heading full">School/Organization</h2>
+    <h2 class="heading full">Contact</h2>
     <div class="controls full">
-      <input type="tel" id="cell" class="floatLabel" name="cell">
-      <label for="cell">name</label>
+      <input type="email" id="email" class="floatLabel" name="email" required>
+      <label for="email">Email</label>
     </div>
     <div class="controls full">
-      <select class="floatLabel">
-          <option value="blank" selected></option>
+      <input type="tel" id="cell" class="floatLabel" name="phone">
+      <label for="cell">phone (include country code)</label>
+    </div>
+    <div class="controls full">
+      <select class="floatLabel" name="country" required>
+        <option value="unspecified"></option>
         <option value="gh">Ghana</option>
+        <option value="other">Other</option>
       </select>
-      <label for="fruit">Country</label>
+      <label for="country">Country</label>
     </div>
   </div>
   <!--  More -->
   <div class="form-group">
     <h2 class="heading full">Additional info</h2>
     <div class="controls full">
-      <textarea name="comments" class="floatLabel" id="comments"></textarea>
-      <label for="comments">Message</label>
+      <textarea name="notes" class="floatLabel" id="notes"></textarea>
+      <label for="notes">Message</label>
       <button class="full">Submit</button>
     </div>
   </div>
