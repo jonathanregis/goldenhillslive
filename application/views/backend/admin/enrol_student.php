@@ -42,11 +42,12 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <?php $packages = $this->crud_model->get_packages(); ?>
                         <label for="course_id">Access type<span class="required">*</span> </label>
                         <select class="form-control select2" data-toggle="select2" name="access_type" id="access_type" required>
-                            <option value="0">One session</option>
-                            <option value="1">12 week access</option>
-                            <option value="2">Full lifetime access</option>
+                            <?php foreach($packages as $package) { ?>
+                            <option value="<?php echo $package['id']; ?>"><?php echo $package['name'];?></option>
+                        <?php } ?>
                         </select>
                     </div>
 
