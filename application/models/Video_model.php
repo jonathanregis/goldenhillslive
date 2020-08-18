@@ -67,6 +67,7 @@ class Video_model extends CI_Model {
 			));
 			$context  = stream_context_create($options);
 
+
 			$hash = json_decode(file_get_contents("https://api.vimeo.com/videos/{$video_id}",false, $context));
 
 			//header("Content-Type: text/plain");
@@ -83,7 +84,14 @@ class Video_model extends CI_Model {
 			);
 		}elseif ('youtube' || 'youtu') {
 			$video_id = $this->get_youtube_video_id($url);
-			$hash = json_decode(file_get_contents("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=".$video_id."&key=".$youtube_api_key.""));
+			//$hash = json_decode(file_get_contents("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=".$video_id."&key=".$youtube_api_key.""));
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=".$video_id."&key=".$youtube_api_key."");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_REFERER, "https://goldenhillsschoolsonline.com/admin/ajax_get_video_details");
+			$response = curl_exec($ch);
+			$hash = json_decode($response);
 
 			if (!$hash) {
 				return;
