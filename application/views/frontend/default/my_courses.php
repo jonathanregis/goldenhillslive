@@ -150,7 +150,7 @@ foreach ($my_courses as $my_course) {
                     								<div class="form-group add_top_30">
                     									<textarea name="review" id ="review_of_a_course_<?php echo $course_details['id']; ?>" class="form-control" style="height:120px;" placeholder="<?php echo site_phrase('write_your_review_here'); ?>"><?php echo $user_specific_rating['review']; ?></textarea>
                     								</div>
-                    								<button type="" class="btn btn-block" onclick="publishRating('<?php echo $course_details['id']; ?>')" name="button"><?php echo site_phrase('publish_rating'); ?></button>
+                    								<button type="button" class="btn btn-block" onclick="publishRating('<?php echo $course_details['id']; ?>')" name="button"><?php echo site_phrase('publish_rating'); ?></button>
                     								<a href="javascript::" class="btn btn-block" onclick="toggleRatingView('<?php echo $course_details['id']; ?>')" name="button"><?php echo site_phrase('cancel_rating'); ?></a>
                     							</form>
                                 </div>
