@@ -1,5 +1,5 @@
 ---
 deployment:
  tasks:
- - export DEPLOYPATH=/home4/ivlpazmy/public_html/goldenhillsschoolsonline.com/
+ - export DEPLOYPATH=/home/nnkxpwce1dxo/public_html/goldenhillsschoolsonline.com/
  - /bin/cp -R * index.html $DEPLOYPATH
