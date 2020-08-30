@@ -106,6 +106,7 @@
                     </div>
                 <?php else: ?>
                     <div class="mt-5">
+                        <iframe src="https://docs.google.com/gview?url=<?php echo base_url().'uploads/lesson_files/'.$lesson_details['attachment']; ?>" style="width:100%; height: 100vh" frameborder="0"> </iframe>
                         <a href="<?php echo base_url().'uploads/lesson_files/'.$lesson_details['attachment']; ?>" class="btn btn-sign-up" download style="color: #fff;">
                             <i class="fa fa-download" style="font-size: 20px;"></i> <?php echo get_phrase('download').' '.$lesson_details['title']; ?>
                         </a>
