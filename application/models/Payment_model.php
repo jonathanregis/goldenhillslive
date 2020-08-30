@@ -88,9 +88,9 @@ class Payment_model extends CI_Model {
 
     //VALIDATE EXPRESSPAY PAYMENT
     public function expresspay($order,$token) {
-      $environment = "sandbox";
-      $merchant_id = "446310613152";
-      $merchant_key = "eJmsG7J60QzeEDGNPYzed-zmLJmvC0xaFjQaR2DmIF-UfHXfJcO2ZH9BO3QbNBt-uNvP8BJDg2wYYGGrn8Y";
+      $environment = "production";
+      $merchant_id = "650070009843";
+      $merchant_key = "myFbtKqQqcGjmhP1qk48D-wxdQamRlOm6uKlgGKzDa-ueyYTRP0blMDXvdIIKdn-wmV3cDe4QHSSrwtPocI";
       $merchantApi = new ExpressPayMerchantApi($merchant_id, $merchant_key, $environment);
 
       $response = $merchantApi->query($token);
