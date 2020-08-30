@@ -354,7 +354,7 @@ class Crud_model extends CI_Model
     }
 
     public function add_package(){
-        $previous_data = $this->db->get('packages')->num_rows();
+        $previous_data = $this->db->get_where('packages',array("name"=>$data['name']))->num_rows();
         if($previous_data == 0){
            $data = array();
             $data['name'] = html_escape($this->input->post('name'));
