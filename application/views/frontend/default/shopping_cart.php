@@ -244,6 +244,7 @@ function handleCartItems(elem) {
 
 
 $("select").on("change" , function() {
+    $(".checkout-btn").attr("disabled","true");
   
   var value = $(this).val();
       courseid = $(this).data("courseid");
@@ -253,6 +254,7 @@ $("select").on("change" , function() {
     console.log(response);
     $("#price-"+courseid+" .current-price").text(response.price);
     $(".total-price").text(response.total);
+    $(".checkout-btn").removeAttr("disabled");
     });
     
 });

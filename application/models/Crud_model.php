@@ -371,10 +371,10 @@ class Crud_model extends CI_Model
     public function edit_package($param1=""){
         $previous_data = $this->db->get('packages')->result_array();
 
-        $checker = true;
+        $checker = false;
         foreach ($previous_data as $row) {
-            if ($row['id'] != $param1) {
-                $checker = false;
+            if ($row['id'] == $param1) {
+                $checker = true;
                 break;
             }
         }
@@ -404,6 +404,10 @@ class Crud_model extends CI_Model
 
     public function delete_package($package_id)
     {
+        if($package_id == 1 || $package_id == "1"){
+            $this->session->set_flashdata('error_message',"Cannot delete default package");
+            return false;
+        }
         $this->db->where('id', $package_id);
         $this->db->delete('packages');
     }

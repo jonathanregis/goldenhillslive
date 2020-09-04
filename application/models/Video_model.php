@@ -11,9 +11,10 @@ class Video_model extends CI_Model {
 
 	// parse video id from youtube embed url
 	function get_youtube_video_id($embed_url = '') {
-		preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $embed_url, $match);
-		$video_id = $match[1];
+		if(preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $embed_url, $match)){
+			$video_id = $match[1];
 		return $video_id;
+		}
 	}
 	// parse video id from vimeo embed url
 	function get_vimeo_video_id($embed_url = '') {
@@ -93,7 +94,7 @@ class Video_model extends CI_Model {
 			$response = curl_exec($ch);
 			$hash = json_decode($response);
 
-			if (!$hash) {
+			if (!$hash || !is_array($hash)) {
 				return;
 			}
 			//header("Content-Type: text/plain");
